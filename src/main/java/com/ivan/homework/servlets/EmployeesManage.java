@@ -1,7 +1,7 @@
 package com.ivan.homework.servlets;
 
 import com.google.gson.Gson;
-import com.ivan.homework.models.Employee;
+import com.ivan.homework.dao.EmployeeDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,28 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @WebServlet("/employees")
 public class EmployeesManage extends HttpServlet {
 
     private Gson gson = new Gson();
-    private List<Employee> employees;
+    private EmployeeDAO employeeDAO;
 
     public void init() {
-        employees = new CopyOnWriteArrayList<>();
-        Employee employee1 = new Employee(1, "Steve", "Fury", "HR", 500);
-        Employee employee2 = new Employee(2, "Amanda", "Johns", "Sales", 400);
-        Employee employee3 = new Employee(3, "Rick", "Martin", "IT", 900);
-        employees.addAll(Arrays.asList(employee1, employee2, employee3));
+
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String empJsonString = this.gson.toJson(employees);
+        employeeDAO = new EmployeeDAO();
+        String empJsonString = this.gson.toJson(employeeDAO.getAllEmployee());
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
@@ -41,22 +33,22 @@ public class EmployeesManage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!requestIsValid(req)) {
-            doGet(req, resp);
-        }
-
+//        if (!requestIsValid(req)) {
+//            doGet(req, resp);
+//        }
+//
 //        int currentID = employees.size();
 //        AtomicInteger idCounter = new AtomicInteger(currentID+1);
-        final String name = req.getParameter("name");
-        final String surname = req.getParameter("surname");
-        final String department = req.getParameter("department");
-        final String salary = req.getParameter("salary");
-
-        final Employee employee = new Employee(4, name, surname, department, Integer.parseInt(salary));
-
-        employees.add(employee);
-
-        doGet(req, resp);
+//        final String name = req.getParameter("name");
+//        final String surname = req.getParameter("surname");
+//        final String department = req.getParameter("department");
+//        final String salary = req.getParameter("salary");
+//
+//        final Employee employee = new Employee(4, name, surname, department, Integer.parseInt(salary));
+//
+//        employees.add(employee);
+//
+//        doGet(req, resp);
 
     }
 
