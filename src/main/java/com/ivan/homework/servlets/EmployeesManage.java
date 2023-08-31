@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet("/employees")
 public class EmployeesManage extends HttpServlet {
@@ -23,7 +24,13 @@ public class EmployeesManage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         employeeDAO = new EmployeeDAO();
-        String empJsonString = this.gson.toJson(employeeDAO.getAllEmployee());
+        String empJsonString = null;
+        try {
+            empJsonString = this.gson.toJson(employeeDAO.getAllEmployee());
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");

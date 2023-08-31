@@ -23,7 +23,7 @@ public class EmployeeDAO {
         }
     }
 
-    public List<Employee> getAllEmployee() {
+    public List<Employee> getAllEmployee() throws SQLException {
         List<Employee> employees = new ArrayList<>();
 
         try {
@@ -44,9 +44,9 @@ public class EmployeeDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            con.close();
         }
-
-        System.out.println(employees);
 
         return employees;
     }
