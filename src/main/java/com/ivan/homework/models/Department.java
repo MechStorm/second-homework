@@ -3,15 +3,15 @@ package com.ivan.homework.models;
 public class Department {
     private int id;
     private String name;
-    private String phoneNumber;
+    private int phoneNumber;
     private String email;
-    private String yearsWorks;
+    private int yearsWorks;
 
 
     public Department() {
     }
 
-    public Department(String name, String phoneNumber, String email, String yearsWorks) {
+    public Department(String name, int phoneNumber, String email, int yearsWorks) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -34,11 +34,11 @@ public class Department {
         this.name = name;
     }
 
-    public String getPhoneNumber() {
+    public int getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -50,11 +50,11 @@ public class Department {
         this.email = email;
     }
 
-    public String getYearsWorks() {
+    public int getYearsWorks() {
         return yearsWorks;
     }
 
-    public void setYearsWorks(String yearsWorks) {
+    public void setYearsWorks(int yearsWorks) {
         this.yearsWorks = yearsWorks;
     }
 }

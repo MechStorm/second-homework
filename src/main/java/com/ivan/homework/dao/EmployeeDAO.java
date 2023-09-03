@@ -6,8 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//Create the ability to fill the database yourself
-
 public class EmployeeDAO {
 
     private static Connection con;
@@ -59,7 +57,7 @@ public class EmployeeDAO {
                 return preparedStatement.executeUpdate();
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return 0;
     }

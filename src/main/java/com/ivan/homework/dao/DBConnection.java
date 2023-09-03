@@ -15,9 +15,9 @@ public class DBConnection {
         Properties p = new Properties();
         p.load(fis);
         String dclass = (String) p.get("driverClass");
-        String url = (String) p.get ("jdbcUrl");
-        String username = (String) p.get ("user");
-        String password = (String) p.get ("password");
+        String url = (String) p.get("jdbcUrl");
+        String username = (String) p.get("user");
+        String password = (String) p.get("password");
         Class.forName(dclass);
         Connection con = null;
 
