@@ -1,6 +1,7 @@
 package com.ivan.homework.servlets;
 
 import com.google.gson.Gson;
+import com.ivan.homework.dao.DBConnection;
 import com.ivan.homework.dao.EmployeeDAO;
 import com.ivan.homework.models.Department;
 import com.ivan.homework.models.Employee;
@@ -23,9 +24,15 @@ public class EmployeesManage extends HttpServlet {
     private EmployeeDAO employeeDAO;
     PrintWriter out;
 
-    public void init() {
-
+    @Override
+    public void init() throws ServletException {
+        try {
+            DBConnection conn = new DBConnection();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         employeeDAO = new EmployeeDAO();
@@ -87,4 +94,6 @@ public class EmployeesManage extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doDelete(req, resp);
     }
+
+
 }

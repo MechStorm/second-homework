@@ -6,15 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class DepartmentDAO {
-    private static Connection con;
+    private Connection con;
 
-    static {
-        try {
-            con = DBConnection.getConnection();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public int postDepartment(Department department) {
         try {

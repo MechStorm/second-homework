@@ -1,11 +1,15 @@
 package com.ivan.homework.models;
 
+import java.util.List;
+
 public class Department {
     private int id;
     private String name;
     private int phoneNumber;
     private String email;
     private int yearsWorks;
+
+    private List<Employee> employees;
 
 
     public Department() {
@@ -56,5 +60,13 @@ public class Department {
 
     public void setYearsWorks(int yearsWorks) {
         this.yearsWorks = yearsWorks;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

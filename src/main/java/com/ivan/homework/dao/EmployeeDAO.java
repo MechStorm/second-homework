@@ -8,15 +8,7 @@ import java.util.List;
 
 public class EmployeeDAO {
 
-    private static Connection con;
-
-    static {
-        try {
-            con = DBConnection.getConnection();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private Connection con;
 
     public List<Employee> getAllEmployee() throws SQLException {
         List<Employee> employees = new ArrayList<>();

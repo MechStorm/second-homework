@@ -1,8 +1,12 @@
 package com.ivan.homework.models;
 
+import java.util.List;
+
 public class Hobbies {
     private int id;
     private String name;
+
+    private List<Employee> employees;
 
     public Hobbies() {
     }
@@ -25,5 +29,13 @@ public class Hobbies {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

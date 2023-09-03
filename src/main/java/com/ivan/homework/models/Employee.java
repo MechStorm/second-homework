@@ -1,5 +1,7 @@
 package com.ivan.homework.models;
 
+import java.util.List;
+
 public class Employee {
     private int id;
     private String name;
@@ -8,6 +10,8 @@ public class Employee {
     private int salary;
 
     private int departmentID;
+
+    private List<Hobbies> hobbies;
 
     public Employee() {
     }
@@ -66,5 +70,13 @@ public class Employee {
 
     public void setDepartmentID(int departmentID) {
         this.departmentID = departmentID;
+    }
+
+    public List<Hobbies> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(List<Hobbies> hobbies) {
+        this.hobbies = hobbies;
     }
 }
