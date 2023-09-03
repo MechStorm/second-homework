@@ -4,17 +4,20 @@ public class Employee {
     private int id;
     private String name;
     private String surname;
-    private String department;
+    private int workExp;
     private int salary;
+
+    private int departmentID;
 
     public Employee() {
     }
 
-    public Employee(String name, String surname, String department, int salary) {
+    public Employee(String name, String surname, int workExp, int salary, int departmentID) {
         this.name = name;
         this.surname = surname;
-        this.department = department;
+        this.workExp = workExp;
         this.salary = salary;
+        this.departmentID = departmentID;
     }
 
     public int getId() {
@@ -41,12 +44,12 @@ public class Employee {
         this.surname = surname;
     }
 
-    public String getDepartment() {
-        return department;
+    public int getWorkExp() {
+        return workExp;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setWorkExp(int workExp) {
+        this.workExp = workExp;
     }
 
     public int getSalary() {
@@ -55,5 +58,13 @@ public class Employee {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public int getDepartmentID() {
+        return departmentID;
+    }
+
+    public void setDepartmentID(int departmentID) {
+        this.departmentID = departmentID;
     }
 }

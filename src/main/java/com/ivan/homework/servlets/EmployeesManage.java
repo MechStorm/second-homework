@@ -2,6 +2,8 @@ package com.ivan.homework.servlets;
 
 import com.google.gson.Gson;
 import com.ivan.homework.dao.EmployeeDAO;
+import com.ivan.homework.models.Department;
+import com.ivan.homework.models.Employee;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/employees")
 public class EmployeesManage extends HttpServlet {
 
     private Gson gson = new Gson();
     private EmployeeDAO employeeDAO;
+    PrintWriter out;
 
     public void init() {
 
@@ -31,7 +36,7 @@ public class EmployeesManage extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        PrintWriter out = resp.getWriter();
+        out = resp.getWriter();
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         out.println(empJsonString);
@@ -40,36 +45,37 @@ public class EmployeesManage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        if (!requestIsValid(req)) {
-//            doGet(req, resp);
-//        }
-//
-//        int currentID = employees.size();
-//        AtomicInteger idCounter = new AtomicInteger(currentID+1);
-//        final String name = req.getParameter("name");
-//        final String surname = req.getParameter("surname");
-//        final String department = req.getParameter("department");
-//        final String salary = req.getParameter("salary");
-//
-//        final Employee employee = new Employee(4, name, surname, department, Integer.parseInt(salary));
-//
-//        employees.add(employee);
-//
-//        doGet(req, resp);
+        List<Department> departments = new ArrayList<>();
+        employeeDAO = new EmployeeDAO();
+        boolean wrongDepID = true;
+        System.out.println("doPost");
+        try {
+            String name = req.getParameter("name");
+            String surname = req.getParameter("surname");
+            int salary = Integer.parseInt(req.getParameter("salary"));
+            int workExp = Integer.parseInt(req.getParameter("work_experience"));
+            int departmentID = Integer.parseInt(req.getParameter("department_id"));
 
-    }
+            for (int i = 0; i<departments.size(); i++) {
+                if (departments.get(i).getId() == departmentID) {
+                    Employee emp = new Employee(name, surname, workExp, salary, departmentID);
+                    employeeDAO.postEmployees(emp);
+                    wrongDepID = false;
+                    resp.setStatus(200);
+                }
+            }
 
-    private boolean requestIsValid(final HttpServletRequest req) {
-        final String name = req.getParameter("name");
-        final String surname = req.getParameter("surname");
-        final String department = req.getParameter("department");
-        final String salary = req.getParameter("salary");
+            if (wrongDepID) {
+                resp.setStatus(404);
+                throw new RuntimeException("Department id doesn't exist");
+            }
 
-        return name != null && name.length() > 0 &&
-                surname != null && surname.length() > 0 &&
-                department != null && department.length() > 0 &&
-                salary != null && salary.length() > 0 &&
-                salary.matches("[+]?\\d+");
+//            response.sendRedirect(request.getContextPath() + "/index");
+        }
+        catch(Exception ex) {
+//            getServletContext().getRequestDispatcher("/notfound.jsp").forward(req, resp);
+            ex.printStackTrace();
+        }
     }
 
     @Override

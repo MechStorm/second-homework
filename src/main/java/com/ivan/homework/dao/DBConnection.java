@@ -19,10 +19,16 @@ public class DBConnection {
         String username = (String) p.get ("user");
         String password = (String) p.get ("password");
         Class.forName(dclass);
-        Connection con = DriverManager.getConnection(url, username, password);
-        ScriptRunner sr = new ScriptRunner(con);
-        Reader reader = new BufferedReader(new FileReader(aSQLScriptFilePath));
-        sr.runScript(reader);
+        Connection con = null;
+
+        try {
+            con = DriverManager.getConnection(url, username, password);
+            ScriptRunner sr = new ScriptRunner(con);
+            Reader reader = new BufferedReader(new FileReader(aSQLScriptFilePath));
+            sr.runScript(reader);
+        } catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
         return con;
     }
 }
