@@ -13,47 +13,42 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DBConnection {
-    private String dclass;
+    private String driver;
     private String url;
-    private String username;
+    private String name;
     private String password;
 
-    public DBConnection() throws IOException {
+    public DBConnection() throws SQLException {
         Properties props = new Properties();
-        try (InputStream in = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+        try(InputStream in = getClass().getClassLoader().getResourceAsStream("application.properties")){
             props.load(in);
-        } catch (Exception ex) {
-            throw new RuntimeException("Error with loading properties file");
+        } catch (IOException ex) {
+            throw new RuntimeException("incorrect properties file");
         }
 
-        this.dclass = props.getProperty("driverClass");
+        this.driver = props.getProperty("driverClass");
         this.url = props.getProperty("jdbcUrl");
-        this.username = props.getProperty("user");
+        this.name = props.getProperty("user");
         this.password = props.getProperty("password");
     }
 
-    public void connectDriver() {
+    public Connection getConnection() {
         try {
-            Class.forName(dclass);
-        } catch (Exception ex) {
-            throw new RuntimeException("Problem with linking driver");
-        }
-    }
-
-    public Connection getConnection() throws IOException, ClassNotFoundException, SQLException {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-            Reader reader = Files.newBufferedReader(Paths.get("db.sql"));
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(url, name, password);
+            Reader reader = Files.newBufferedReader(Paths.get("D:\\Java\\intensive\\second-homework\\src\\main\\resources\\db.sql"));
             ScriptRunner sr = new ScriptRunner(conn);
             sr.runScript(reader);
-            System.out.println("Connection succeeded");
+            System.out.println("Connection success");
             return conn;
-        } catch (Exception ex) {
-            System.out.println("Connection failed");
-            ex.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            throw new RuntimeException("problem with connect to db");
+        } catch (IOException ex) {
+            System.out.println(ex);
+            throw new RuntimeException("Migrations file not found");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Driver not found");
         }
-
-        return conn;
     }
 }

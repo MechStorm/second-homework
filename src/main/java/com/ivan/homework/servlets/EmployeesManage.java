@@ -28,7 +28,7 @@ public class EmployeesManage extends HttpServlet {
     public void init() throws ServletException {
         try {
             DBConnection conn = new DBConnection();
-        } catch (IOException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
