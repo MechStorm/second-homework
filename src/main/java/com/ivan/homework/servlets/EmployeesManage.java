@@ -1,7 +1,7 @@
 package com.ivan.homework.servlets;
 
 import com.google.gson.Gson;
-import com.ivan.homework.dao.DBConnection;
+import com.ivan.homework.util.DBConnection;
 import com.ivan.homework.dao.EmployeeDAO;
 import com.ivan.homework.models.Department;
 import com.ivan.homework.models.Employee;

@@ -1,4 +1,4 @@
-package com.ivan.homework.dao;
+package com.ivan.homework.util;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
@@ -32,9 +32,16 @@ public class DBConnection {
         this.password = props.getProperty("password");
     }
 
-    public Connection getConnection() {
+    public void driverLink() {
         try {
             Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Problem with driver connection");
+        }
+    }
+
+    public Connection getConnection() {
+        try {
             Connection conn = DriverManager.getConnection(url, name, password);
             Reader reader = Files.newBufferedReader(Paths.get("D:\\Java\\intensive\\second-homework\\src\\main\\resources\\db.sql"));
             ScriptRunner sr = new ScriptRunner(conn);
@@ -47,8 +54,6 @@ public class DBConnection {
         } catch (IOException ex) {
             System.out.println(ex);
             throw new RuntimeException("Migrations file not found");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Driver not found");
         }
     }
 }

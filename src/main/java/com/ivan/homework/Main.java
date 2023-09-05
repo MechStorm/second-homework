@@ -1,6 +1,6 @@
 package com.ivan.homework;
 
-import com.ivan.homework.dao.DBConnection;
+import com.ivan.homework.util.DBConnection;
 
 import java.sql.SQLException;
 
