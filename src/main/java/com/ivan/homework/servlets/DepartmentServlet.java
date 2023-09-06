@@ -1,5 +1,6 @@
 package com.ivan.homework.servlets;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.ivan.homework.dao.DepartmentDAO;
 import com.ivan.homework.dao.DepartmentDAOImpl;
@@ -68,9 +69,25 @@ public class DepartmentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-        //       String name = req.getParameter("name");
-//            int phoneNumber = Integer.parseInt(req.getParameter("phone_number"));
+        String path = req.getPathInfo();
+
+        if (path == null) {
+            writer = resp.getWriter();
+//            Department department = gson.fromJson(req.getInputStream().toString(), Department.class);
+
+            String name = req.getParameter("name");
+            int phoneNumber = Integer.parseInt(req.getParameter("phone_number"));
+            String email = req.getParameter("email");
+            int yearsWorks = Integer.parseInt(req.getParameter("years_works"));
+            Department department = new Department(name, phoneNumber, email, yearsWorks);
+
+
+//            departmentService.create(department);
+            writer.println(gson.toJson(departmentService.create(department)));
+            resp.setStatus(201);
+        } else {
+            resp.setStatus(400);
+        }
     }
 
     @Override

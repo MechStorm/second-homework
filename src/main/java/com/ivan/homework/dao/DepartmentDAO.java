@@ -8,4 +8,6 @@ public interface DepartmentDAO {
     Department getByID(int depID);
 
     List<Department> getAll();
+
+    Department create(Department department);
 }

@@ -4,8 +4,10 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,7 +45,9 @@ public class DBConnection {
     public Connection getConnection() {
         try {
             Connection conn = DriverManager.getConnection(url, name, password);
-            Reader reader = Files.newBufferedReader(Paths.get("D:\\Java\\intensive\\second-homework\\src\\main\\resources\\db.sql"));
+            String dbFile = "db.sql";
+            InputStream in = getClass().getClassLoader().getResourceAsStream(dbFile);
+            InputStreamReader reader = new InputStreamReader(in);
             ScriptRunner sr = new ScriptRunner(conn);
             sr.runScript(reader);
             System.out.println("Connection success");
@@ -51,9 +55,6 @@ public class DBConnection {
         } catch (SQLException ex) {
             System.out.println(ex);
             throw new RuntimeException("problem with connect to db");
-        } catch (IOException ex) {
-            System.out.println(ex);
-            throw new RuntimeException("Migrations file not found");
         }
     }
 }

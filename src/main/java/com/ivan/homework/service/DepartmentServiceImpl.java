@@ -22,4 +22,9 @@ public class DepartmentServiceImpl implements  DepartmentService{
     public List<Department> getAll() {
         return departmentDAO.getAll();
     }
+
+    @Override
+    public Department create(Department department) {
+        return departmentDAO.create(department);
+    }
 }

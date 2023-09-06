@@ -90,4 +90,23 @@ public class DepartmentDAOImpl implements DepartmentDAO{
         }
         return departments;
     }
+
+    @Override
+    public Department create(Department department) {
+        conn.driverLink();
+        try(Connection connection = conn.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO department (name, phone_number, email, years_works) VALUES (?, ?, ?, ?)")){
+            preparedStatement.setString(1, department.getName());
+            preparedStatement.setInt(2, department.getPhoneNumber());
+            preparedStatement.setString(3, department.getEmail());
+            preparedStatement.setInt(4, department.getYearsWorks());
+            System.out.println(department);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with insert data");
+        }
+
+        return department;
+    }
 }
