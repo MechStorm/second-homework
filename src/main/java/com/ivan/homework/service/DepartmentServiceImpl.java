@@ -3,7 +3,6 @@ package com.ivan.homework.service;
 import com.ivan.homework.dao.DepartmentDAO;
 import com.ivan.homework.models.Department;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentServiceImpl implements  DepartmentService{
@@ -31,5 +30,10 @@ public class DepartmentServiceImpl implements  DepartmentService{
     @Override
     public Department update(Department department) {
         return departmentDAO.update(department);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return departmentDAO.delete(id);
     }
 }

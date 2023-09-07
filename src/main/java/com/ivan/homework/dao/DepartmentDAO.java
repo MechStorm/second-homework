@@ -12,4 +12,6 @@ public interface DepartmentDAO {
     Department create(Department department);
 
     Department update(Department department);
+
+    boolean delete(int id);
 }

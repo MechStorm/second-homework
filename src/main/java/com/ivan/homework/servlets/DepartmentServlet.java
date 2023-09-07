@@ -77,7 +77,6 @@ public class DepartmentServlet extends HttpServlet {
         if (path == null) {
             writer = resp.getWriter();
 
-            if (req.getParameter("id") == null) {
                 String name = req.getParameter("name");
                 int phoneNumber = Integer.parseInt(req.getParameter("phone_number"));
                 String email = req.getParameter("email");
@@ -85,10 +84,7 @@ public class DepartmentServlet extends HttpServlet {
                 Department department = new Department(name, phoneNumber, email, yearsWorks);
 
                 writer.println(gson.toJson(departmentService.create(department)));
-                resp.setStatus(201);
-            } else {
-                doPut(req, resp);
-            }
+
         } else {
             resp.setStatus(400);
         }
@@ -122,8 +118,20 @@ public class DepartmentServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        Department department = departmentService.getByID(id);
+
+        if (department == null) {
+            resp.setStatus(404);
+        } else {
+            boolean deleteSuccess = departmentService.delete(id);
+            if (deleteSuccess) {
+                writer.println("Department with id " + id + "is successfully deleted");
+                resp.setStatus(200);
+            } else {
+                resp.setStatus(404);
+            }
+        }
     }
-
-
 }

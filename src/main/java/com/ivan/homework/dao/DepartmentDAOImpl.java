@@ -129,4 +129,19 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         }
         return department;
     }
+
+    @Override
+    public boolean delete(int id) {
+        conn.driverLink();
+        try(Connection connection = conn.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM department WHERE id = ?")){
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with delete data");
+        }
+    }
 }
