@@ -73,7 +73,6 @@ public class DepartmentServlet extends HttpServlet {
 
         if (path == null) {
             writer = resp.getWriter();
-//            Department department = gson.fromJson(req.getInputStream().toString(), Department.class);
 
             String name = req.getParameter("name");
             int phoneNumber = Integer.parseInt(req.getParameter("phone_number"));
@@ -81,8 +80,6 @@ public class DepartmentServlet extends HttpServlet {
             int yearsWorks = Integer.parseInt(req.getParameter("years_works"));
             Department department = new Department(name, phoneNumber, email, yearsWorks);
 
-
-//            departmentService.create(department);
             writer.println(gson.toJson(departmentService.create(department)));
             resp.setStatus(201);
         } else {
