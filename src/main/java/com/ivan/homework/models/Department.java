@@ -24,6 +24,14 @@ public class Department {
         this.yearsWorks = yearsWorks;
     }
 
+    public Department(int id, String name, int phoneNumber, String email, int yearsWorks) {
+        this.id = id;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.yearsWorks = yearsWorks;
+    }
+
     public int getId() {
         return id;
     }

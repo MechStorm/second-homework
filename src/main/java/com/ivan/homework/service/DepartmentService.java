@@ -10,4 +10,8 @@ public interface DepartmentService {
     List<Department> getAll();
 
     Department create(Department department);
+
+    Department update(Department department);
+
+
 }

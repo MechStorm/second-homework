@@ -10,4 +10,6 @@ public interface DepartmentDAO {
     List<Department> getAll();
 
     Department create(Department department);
+
+    Department update(Department department);
 }

@@ -1,7 +1,10 @@
 package com.ivan.homework.servlets;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.ivan.homework.dao.DepartmentDAO;
 import com.ivan.homework.dao.DepartmentDAOImpl;
 import com.ivan.homework.models.Department;
@@ -74,14 +77,18 @@ public class DepartmentServlet extends HttpServlet {
         if (path == null) {
             writer = resp.getWriter();
 
-            String name = req.getParameter("name");
-            int phoneNumber = Integer.parseInt(req.getParameter("phone_number"));
-            String email = req.getParameter("email");
-            int yearsWorks = Integer.parseInt(req.getParameter("years_works"));
-            Department department = new Department(name, phoneNumber, email, yearsWorks);
+            if (req.getParameter("id") == null) {
+                String name = req.getParameter("name");
+                int phoneNumber = Integer.parseInt(req.getParameter("phone_number"));
+                String email = req.getParameter("email");
+                int yearsWorks = Integer.parseInt(req.getParameter("years_works"));
+                Department department = new Department(name, phoneNumber, email, yearsWorks);
 
-            writer.println(gson.toJson(departmentService.create(department)));
-            resp.setStatus(201);
+                writer.println(gson.toJson(departmentService.create(department)));
+                resp.setStatus(201);
+            } else {
+                doPut(req, resp);
+            }
         } else {
             resp.setStatus(400);
         }
@@ -89,7 +96,28 @@ public class DepartmentServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        String path = req.getPathInfo();
+
+        if (path == null) {
+            writer = resp.getWriter();
+
+            int id = Integer.parseInt(req.getParameter("id"));
+            String name = req.getParameter("name");
+            int phoneNumber = Integer.parseInt(req.getParameter("phone_number"));
+            String email = req.getParameter("email");
+            int yearsWorks = Integer.parseInt(req.getParameter("years_works"));
+
+            if (id == 0 || name == null || phoneNumber == 0 || email == null || yearsWorks == 0) {
+                resp.setStatus(400);
+                return;
+            }
+
+            Department department = new Department(id, name, phoneNumber, email, yearsWorks);
+            writer.println(gson.toJson(departmentService.update(department)));
+            resp.setStatus(200);
+        } else {
+            resp.setStatus(404);
+        }
     }
 
     @Override
