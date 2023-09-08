@@ -34,6 +34,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
                 List<Employee> employees = getEmployeesFromDepartment(department.getId());
                 department.setEmployees(employees);
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException("Error with db connection");
         }
@@ -60,6 +61,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
                 emp.setWorkExp(rs.getInt("work_experience"));
                 employees.add(emp);
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException("Error with SQL query or incorrect db connection");
         }
