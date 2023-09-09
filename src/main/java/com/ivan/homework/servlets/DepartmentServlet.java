@@ -1,10 +1,6 @@
 package com.ivan.homework.servlets;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import com.ivan.homework.dao.DepartmentDAO;
 import com.ivan.homework.dao.DepartmentDAOImpl;
 import com.ivan.homework.models.Department;

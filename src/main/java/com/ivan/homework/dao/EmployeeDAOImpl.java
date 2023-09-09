@@ -20,7 +20,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         Employee employee = null;
         conn.driverLink();
         try (Connection connection = conn.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT FROM employees WHERE id = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM employees WHERE id = ?")) {
             preparedStatement.setInt(1, empID);
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -48,13 +48,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         conn.driverLink();
 
         try (Connection connection = conn.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT h.id, e.name FROM hobbies h" +
-                     "JOIN emp_hobbies eh ON h.id = eh.hobbies_id" +
-                     "JOIN employees e ON e.id = eh.employees_id WHERE e.id = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT h.id, h.name FROM hobbies h " +
+                     "JOIN employees_hobbies eh ON h.id = eh.hobby_id " +
+                     "JOIN employees e ON e.id = eh.employee_id WHERE e.id = ?")) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 Hobbies hobby = new Hobbies();
                 hobby.setId(rs.getInt("id"));
                 hobby.setName(rs.getString("name"));
@@ -74,11 +74,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         List<Employee> employees = new ArrayList<>();
         conn.driverLink();
 
-        try(Connection connection = conn.getConnection();
-            Statement statement = connection.createStatement()) {
+        try (Connection connection = conn.getConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery("SELECT * FROM employees");
 
-            while(rs.next()) {
+            while (rs.next()) {
                 Employee employee = new Employee();
                 employee.setId(rs.getInt("id"));
                 employee.setName(rs.getString("name"));
@@ -95,5 +95,27 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             throw new RuntimeException("Error with db connection");
         }
         return employees;
+    }
+
+    @Override
+    public Employee create(Employee employee) {
+        conn.driverLink();
+        try (Connection connection = conn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO employees(name, surname, salary, work_experience, department_id) " +
+                     "VALUES(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setString(1, employee.getName());
+            preparedStatement.setString(2, employee.getSurname());
+            preparedStatement.setInt(3, employee.getSalary());
+            preparedStatement.setInt(4, employee.getWorkExp());
+            preparedStatement.setInt(5, employee.getDepartmentID());
+
+            preparedStatement.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with db connection");
+        }
+        return employee;
     }
 }

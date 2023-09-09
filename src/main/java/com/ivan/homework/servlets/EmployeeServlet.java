@@ -68,7 +68,22 @@ public class EmployeeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String path = req.getPathInfo();
+
+        if (path == null) {
+            writer = resp.getWriter();
+
+            String name = req.getParameter("name");
+            String surname = req.getParameter("surname");
+            int salary = Integer.parseInt(req.getParameter("salary"));
+            int workExp = Integer.parseInt(req.getParameter("work_experience"));
+            int depID = Integer.parseInt(req.getParameter("department_id"));
+            Employee employee = new Employee(name, surname, workExp, salary, depID);
+
+            writer.println(gson.toJson(employeeService.create(employee)));
+        } else {
+            resp.setStatus(400);
+        }
     }
 
     @Override

@@ -59,6 +59,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
                 emp.setSurname(rs.getString("surname"));
                 emp.setSalary(rs.getInt("salary"));
                 emp.setWorkExp(rs.getInt("work_experience"));
+                emp.setDepartmentID(depID);
                 employees.add(emp);
             }
             connection.commit();
@@ -104,7 +105,6 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             preparedStatement.setInt(2, department.getPhoneNumber());
             preparedStatement.setString(3, department.getEmail());
             preparedStatement.setInt(4, department.getYearsWorks());
-            System.out.println("department in post");
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
