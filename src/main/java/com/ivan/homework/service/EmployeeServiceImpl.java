@@ -26,4 +26,19 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee create(Employee employee) {
         return employeeDAO.create(employee);
     }
+
+    @Override
+    public boolean addHobbytoEmployee(int empID, int hobbyID) {
+        return employeeDAO.addHobbyToEmployee(empID, hobbyID);
+    }
+
+    @Override
+    public Employee update(Employee employee) {
+        return employeeDAO.update(employee);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return employeeDAO.delete(id);
+    }
 }

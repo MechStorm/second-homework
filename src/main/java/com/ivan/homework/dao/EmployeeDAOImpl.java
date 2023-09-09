@@ -118,4 +118,57 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         }
         return employee;
     }
+
+    @Override
+    public boolean addHobbyToEmployee(int empID, int hobbyID) {
+        conn.driverLink();
+        try (Connection connection = conn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT IGNORE INTO employees_hobbies(employee_id, hobby_id) VALUES (?, ?)")) {
+            preparedStatement.setInt(1, empID);
+            preparedStatement.setInt(2, hobbyID);
+            preparedStatement.executeUpdate();
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with db connection");
+        }
+    }
+
+    @Override
+    public Employee update(Employee employee) {
+        conn.driverLink();
+        try (Connection connection = conn.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE employees SET name = ?, surname = ?, salary = ?, work_experience = ?, department_id = ? WHERE id = ?")) {
+            preparedStatement.setString(1, employee.getName());
+            preparedStatement.setString(2, employee.getSurname());
+            preparedStatement.setInt(3, employee.getSalary());
+            preparedStatement.setInt(4, employee.getWorkExp());
+            preparedStatement.setInt(5, employee.getDepartmentID());
+            preparedStatement.setInt(6, employee.getId());
+            preparedStatement.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with db connection");
+        }
+        return employee;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        conn.driverLink();
+        try (Connection connection = conn.getConnection();
+             PreparedStatement prepStatementDeleteFromLinkTable = connection.prepareStatement("DELETE FROM employees_hobbies WHERE employee_id = ?");
+             PreparedStatement prepStatementDeleteEmployee = connection.prepareStatement("DELETE FROM employees WHERE id = ?")) {
+            prepStatementDeleteFromLinkTable.setInt(1, id);
+            prepStatementDeleteFromLinkTable.executeUpdate();
+            prepStatementDeleteEmployee.setInt(1, id);
+            prepStatementDeleteEmployee.executeUpdate();
+            connection.commit();
+
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with db connection");
+        }
+    }
 }

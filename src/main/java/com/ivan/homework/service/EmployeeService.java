@@ -10,4 +10,10 @@ public interface EmployeeService {
     List<Employee> getAll();
 
     Employee create(Employee employee);
+
+    boolean addHobbytoEmployee(int empID, int hobbyID);
+
+    Employee update(Employee employee);
+
+    boolean delete(int id);
 }
