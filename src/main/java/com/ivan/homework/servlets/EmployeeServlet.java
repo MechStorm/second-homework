@@ -3,12 +3,14 @@ package com.ivan.homework.servlets;
 import com.google.gson.Gson;
 import com.ivan.homework.dao.EmployeeDAO;
 import com.ivan.homework.dao.EmployeeDAOImpl;
-import com.ivan.homework.models.Department;
+import com.ivan.homework.dao.HobbiesDAO;
+import com.ivan.homework.dao.HobbiesDAOImpl;
 import com.ivan.homework.models.Employee;
 import com.ivan.homework.models.Hobbies;
 import com.ivan.homework.service.EmployeeService;
 import com.ivan.homework.service.EmployeeServiceImpl;
 import com.ivan.homework.service.HobbiesService;
+import com.ivan.homework.service.HobbiesServiceImpl;
 import com.ivan.homework.util.DBConnection;
 
 import javax.servlet.ServletException;
@@ -19,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/employees")
@@ -36,6 +37,9 @@ public class EmployeeServlet extends HttpServlet {
             DBConnection conn = new DBConnection();
             EmployeeDAO employeeDAO = new EmployeeDAOImpl(conn);
             employeeService = new EmployeeServiceImpl(employeeDAO);
+
+            HobbiesDAO hobbiesDAO = new HobbiesDAOImpl(conn);
+            hobbiesService = new HobbiesServiceImpl(hobbiesDAO);
         } catch (SQLException e) {
             throw new RuntimeException("Error with connect to db");
         }
@@ -102,7 +106,6 @@ public class EmployeeServlet extends HttpServlet {
 
             Employee employee = employeeService.getByID(empID);
             Hobbies hobby = hobbiesService.getByID(hobbyID);
-
             if (employee == null || hobby == null) {
                 resp.setStatus(404);
             } else {
@@ -114,7 +117,8 @@ public class EmployeeServlet extends HttpServlet {
         if (path == null) {
             writer = resp.getWriter();
 
-            int empID = Integer.parseInt(req.getParameter("id"));
+            idEmp = req.getParameter("empId");
+            int empID = Integer.parseInt(idEmp);
             String name = req.getParameter("name");
             String surname = req.getParameter("surname");
             int salary = Integer.parseInt(req.getParameter("salary"));

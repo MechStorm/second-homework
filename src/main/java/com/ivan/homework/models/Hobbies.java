@@ -11,6 +11,11 @@ public class Hobbies {
     public Hobbies() {
     }
 
+    public Hobbies(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Hobbies(String name) {
         this.name = name;
     }
