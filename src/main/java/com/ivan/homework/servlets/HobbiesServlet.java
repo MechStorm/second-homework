@@ -25,7 +25,7 @@ public class HobbiesServlet extends HttpServlet {
     private PrintWriter writer;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         try {
             gson = new Gson();
             DBConnection conn = new DBConnection();
@@ -36,8 +36,12 @@ public class HobbiesServlet extends HttpServlet {
         }
     }
 
+    public void setHobbiesService(HobbiesServiceImpl hobbiesService) {
+        this.hobbiesService = hobbiesService;
+    }
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
         if (id != null) {
@@ -66,7 +70,7 @@ public class HobbiesServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
 
         if (path == null) {
@@ -82,7 +86,7 @@ public class HobbiesServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
 
         if (path == null) {
@@ -105,7 +109,7 @@ public class HobbiesServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
         Hobbies hobby = hobbiesService.getByID(id);
@@ -113,9 +117,10 @@ public class HobbiesServlet extends HttpServlet {
         if (hobby == null) {
             resp.setStatus(404);
         } else {
+            writer = resp.getWriter();
             boolean deleteSuccess = hobbiesService.delete(id);
             if (deleteSuccess) {
-                writer.println("Hobby with id " + id + "is successfully deleted");
+                writer.print("Hobby with id " + id + " is successfully deleted");
                 resp.setStatus(200);
             } else {
                 resp.setStatus(404);

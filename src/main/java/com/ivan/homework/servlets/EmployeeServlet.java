@@ -45,8 +45,12 @@ public class EmployeeServlet extends HttpServlet {
         }
     }
 
+    public void setEmployeeService(EmployeeServiceImpl employeeService) {
+        this.employeeService = employeeService;
+    }
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
         if (id != null) {
@@ -75,7 +79,7 @@ public class EmployeeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
 
         if (path == null) {
@@ -95,7 +99,7 @@ public class EmployeeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
         String idEmp = req.getParameter("empId");
         String idHob = req.getParameter("hobbyId");
@@ -139,16 +143,17 @@ public class EmployeeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("id") != null) {
             int id = Integer.parseInt(req.getParameter("id"));
             Employee emp = employeeService.getByID(id);
             if (emp == null) {
                 resp.setStatus(404);
             } else {
+                writer = resp.getWriter();
                 boolean deleteSuccess = employeeService.delete(id);
                 if (deleteSuccess) {
-                    writer.println("Employee with id " + id + "is successfully deleted");
+                    writer.print("Employee with id " + id + " is successfully deleted");
                     resp.setStatus(200);
                 } else {
                     resp.setStatus(404);

@@ -37,8 +37,12 @@ public class DepartmentServlet extends HttpServlet {
         }
     }
 
+    public void setDepartmentService(DepartmentServiceImpl departmentService) {
+        this.departmentService = departmentService;
+    }
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
         if (id != null) {
@@ -67,7 +71,7 @@ public class DepartmentServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
 
         if (path == null) {
@@ -113,7 +117,7 @@ public class DepartmentServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
 
         Department department = departmentService.getByID(id);
@@ -121,9 +125,10 @@ public class DepartmentServlet extends HttpServlet {
         if (department == null) {
             resp.setStatus(404);
         } else {
+            writer = resp.getWriter();
             boolean deleteSuccess = departmentService.delete(id);
             if (deleteSuccess) {
-                writer.println("Department with id " + id + "is successfully deleted");
+                writer.print("Department with id " + id + " is successfully deleted");
                 resp.setStatus(200);
             } else {
                 resp.setStatus(404);
