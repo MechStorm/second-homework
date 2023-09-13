@@ -62,7 +62,7 @@ public class DBConnection {
     public Connection getConnection() {
         try {
             Connection conn = DriverManager.getConnection(url, name, password);
-            String dbFile = "db.sql";
+            String dbFile = "com/ivan/homework/dao/db.sql";
             InputStream in = getClass().getClassLoader().getResourceAsStream(dbFile);
             InputStreamReader reader = new InputStreamReader(in);
             ScriptRunner sr = new ScriptRunner(conn);

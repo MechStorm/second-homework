@@ -3,20 +3,13 @@ package repository;
 
 import com.ivan.homework.dao.DepartmentDAO;
 import com.ivan.homework.dao.DepartmentDAOImpl;
-import com.ivan.homework.models.Department;
 import com.ivan.homework.util.DBConnection;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.*;
-import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +29,7 @@ public class DepartmentDAOTest {
 
     @BeforeAll
     static void startDb() {
-        mySQLContainer.withInitScript("db.sql");
+        mySQLContainer.withInitScript("com/ivan/homework/dao/db.sql");
         mySQLContainer.start();
     }
 
