@@ -3,66 +3,62 @@ package repository;
 
 import com.ivan.homework.dao.DepartmentDAO;
 import com.ivan.homework.dao.DepartmentDAOImpl;
+import com.ivan.homework.models.Department;
 import com.ivan.homework.util.DBConnection;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Statement;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
-public class DepartmentDAOTest {
+class DepartmentDAOTest {
 
     private static DepartmentDAO departmentDAO;
 
     @Container
-    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0.32")
+    private static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:5.7.34")
             .withDatabaseName("my_db")
             .withUsername("bestuser")
-            .withPassword("bestuser");
+            .withPassword("bestuser")
+            .withInitScript("db.sql");
 
     @BeforeAll
-    static void startDb() {
-        mySQLContainer.withInitScript("com/ivan/homework/dao/db.sql");
+    static void startDb() throws SQLException {
         mySQLContainer.start();
-    }
-
-    @BeforeEach
-    public void start() throws SQLException {
         DBConnection dbConnection = new DBConnection();
         dbConnection.driverLink();
         dbConnection.setUrl(mySQLContainer.getJdbcUrl());
-
         departmentDAO = new DepartmentDAOImpl(dbConnection);
-
     }
 
-
-//    @AfterEach
-//    public void clearDB() {
-//        try(Connection connection = DriverManager.getConnection(container.getJdbcUrl(), "bestuser", "bestuser")) {
-//            Statement statement = connection.createStatement();
-//            statement.executeUpdate("DELETE FROM department");
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Failed with clear db in test");
-//        }
-//    }
+    @AfterEach
+    public void clearDB() {
+        try(Connection connection = DriverManager.getConnection(mySQLContainer.getJdbcUrl(), "bestuser", "bestuser")) {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM department");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     public void getAllDepartmentTest() {
-//        departmentDAO.create(new Department("IT", 123, "top-company@mail.com", 10));
+        departmentDAO.create(new Department("IT", 123, "top-company@mail.com", 10));
 
-//        List<Department> departmens = departmentDAO.getAll();
-        List<String> deps = new ArrayList<>();
-        deps.add("some");
+        List<Department> departments = departmentDAO.getAll();
 
-        assertEquals(1, deps.size());
+        assertEquals(1, departments.size());
     }
 
     @AfterAll

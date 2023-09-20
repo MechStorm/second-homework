@@ -19,6 +19,9 @@ public class DBConnection {
     public String getDriver() {
         return driver;
     }
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
 
     public String getUrl() {
         return url;
@@ -31,9 +34,15 @@ public class DBConnection {
     public String getName() {
         return name;
     }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getPassword() {
         return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 
@@ -62,9 +71,11 @@ public class DBConnection {
     public Connection getConnection() {
         try {
             Connection conn = DriverManager.getConnection(url, name, password);
-            String dbFile = "com/ivan/homework/dao/db.sql";
+            String dbFile = "db.sql";
+
             InputStream in = getClass().getClassLoader().getResourceAsStream(dbFile);
             InputStreamReader reader = new InputStreamReader(in);
+//            System.out.println(in == null);
             ScriptRunner sr = new ScriptRunner(conn);
             sr.runScript(reader);
             System.out.println("Connection success");
